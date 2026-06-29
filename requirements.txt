@@ -1,0 +1,8 @@
+# No third-party Python packages required.
+# This tool uses only Python standard library (tkinter, subprocess, json, etc.)
+# and relies on FFmpeg (system-level dependency) for video processing.
+#
+# To install FFmpeg:
+#   Windows: https://ffmpeg.org/download.html  (add to PATH)
+#   macOS:   brew install ffmpeg
+#   Linux:   sudo apt install ffmpeg
