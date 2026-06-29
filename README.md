@@ -7,6 +7,8 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 ![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey)
 
+![screenshot](assets/screenshot.png)
+
 ---
 
 ## 功能 Features
@@ -38,7 +40,7 @@ https://www.python.org/downloads/
 ### 3. 下載本工具
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/video-gif-clipper.git
+git clone https://github.com/dinoguo0314/video-gif-clipper.git
 cd video-gif-clipper
 ```
 
