@@ -301,6 +301,51 @@ class App(tk.Tk):
         self.update_idletasks()
 
 
+def run_cli():
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Randomly extract clips from a video and convert to GIF."
+    )
+    parser.add_argument("input",               help="Input video file path")
+    parser.add_argument("--output", "-o",      default="", help="Output folder (default: same as input)")
+    parser.add_argument("--count",  "-n",      type=int, default=10,  help="Number of clips (default: 10)")
+    parser.add_argument("--duration", "-d",    type=int, default=5,   help="Clip duration in seconds (default: 5)")
+    parser.add_argument("--width", "-w",       type=int, default=480, help="GIF width in pixels (default: 480)")
+    parser.add_argument("--fps",               type=int, default=15,  help="GIF FPS (default: 15)")
+    parser.add_argument("--colors",            type=int, default=256, help="GIF color count (default: 256)")
+    args = parser.parse_args()
+
+    video = args.input
+    if not os.path.isfile(video):
+        print(f"Error: File not found: {video}", file=sys.stderr)
+        sys.exit(1)
+
+    out_dir = args.output or str(Path(video).parent)
+    os.makedirs(out_dir, exist_ok=True)
+
+    setup_ffmpeg_path()
+
+    print(f"Reading video: {video}")
+    total = get_video_duration(video)
+    print(f"Duration: {total:.1f}s")
+
+    starts = pick_non_overlapping_starts(total, args.duration, args.count)
+    video_stem = Path(video).stem
+    results = []
+
+    for i, start in enumerate(starts, 1):
+        out_file = os.path.join(out_dir, f"{video_stem}_clip{i:02d}_{int(start)}s.gif")
+        print(f"[{i}/{args.count}] t={start:.1f}s → {os.path.basename(out_file)}")
+        clip_to_gif(video, start, args.duration, out_file, args.width, args.fps, args.colors)
+        results.append(out_file)
+        print(f"       OK ({os.path.getsize(out_file)//1024} KB)")
+
+    print(f"\nDone. {len(results)} GIFs saved to: {out_dir}")
+
+
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    if len(sys.argv) > 1:
+        run_cli()
+    else:
+        app = App()
+        app.mainloop()
