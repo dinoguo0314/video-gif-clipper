@@ -22,6 +22,13 @@ _FFMPEG_SEARCH_DIRS = [
 ]
 
 
+def _exe_dir() -> Path:
+    """Return the directory containing the running executable or script."""
+    if getattr(sys, "frozen", False):
+        return Path(sys.executable).parent
+    return Path(__file__).parent
+
+
 def setup_ffmpeg_path() -> None:
     """Add ffmpeg bin dir to PATH if ffmpeg is not already findable."""
     try:
@@ -29,6 +36,12 @@ def setup_ffmpeg_path() -> None:
         return  # already in PATH
     except (FileNotFoundError, subprocess.CalledProcessError):
         pass
+
+    # When running as a bundled exe, check next to the executable first
+    bundled = _exe_dir() / "ffprobe.exe"
+    if bundled.exists():
+        os.environ["PATH"] = str(bundled.parent) + os.pathsep + os.environ.get("PATH", "")
+        return
 
     for base in _FFMPEG_SEARCH_DIRS:
         for candidate in Path(base).rglob("ffprobe.exe") if Path(base).exists() else []:
