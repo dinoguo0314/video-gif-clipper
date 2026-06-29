@@ -21,6 +21,18 @@
 
 ---
 
+## 下載執行檔 Download (Windows)
+
+> 不想安裝 Python？直接下載免安裝版：
+
+**[⬇ 下載 VideoGifClipper-v1.0.0-windows.zip](https://github.com/dinoguo0314/video-gif-clipper/releases/latest)**
+
+1. 下載並解壓縮 ZIP
+2. 執行 `VideoGifClipper.exe`
+3. 無需安裝 Python 或 FFmpeg，開箱即用
+
+---
+
 ## 安裝 Installation
 
 ### 1. 安裝 FFmpeg（必要 / Required）
